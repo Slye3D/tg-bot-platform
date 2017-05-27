@@ -1,6 +1,6 @@
 {
   "name": "tg-bot-platform",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "This is a simple framework for creating Telegram bots based on `node-telegram-bot-api` and `redis`",
   "main": "platform.js",
   "scripts": {

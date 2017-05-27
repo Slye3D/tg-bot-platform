@@ -36,7 +36,7 @@ class BotMessageSent{
 
 	_load(message){
 		this.message        = message;
-		this.id             = message.message_id;
+		this.id             = message.message_id || message.id;
 		this.from           = message.from ? new User(message.from) : undefined;
 		this.chat           = message.chat instanceof User ? message.chat : new User(message.chat);
 		this.forward_from   = message.forward_from ? new User(message.forward_from) : undefined;
