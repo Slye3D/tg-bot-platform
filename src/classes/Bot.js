@@ -355,12 +355,12 @@ class Bot {
 		var change_history = this._getPage(page, args, user, is_callback, msg);
 		if(change_history){
 			// ll: last link
-			user.get('ll', (err, data) => {
-				if(data !== null){
-					global.RedisClient.rpush('h:' + user.id, data);
-				}
-				global.RedisClient.set('ll', link);
-			});
+			// user.get('ll', (err, data) => {
+			// 	if(data !== null){
+			// 		global.RedisClient.rpush('h:' + user.id, data);
+			// 	}
+			// 	global.RedisClient.set('ll', link);
+			// });
 			user.set('page', page);
 			user.set('args', args);
 		}
