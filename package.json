@@ -1,0 +1,34 @@
+{
+  "name": "tg-bot-platform",
+  "version": "0.1.0",
+  "description": "This is a simple framework for creating Telegram bots based on `node-telegram-bot-api` and `redis`",
+  "main": "platform.js",
+  "scripts": {
+    "install": "cat src/classes/*.js src/index.js > platform.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slye-team/tg-bot-platform.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "node",
+    "api",
+    "telegram",
+    "api"
+  ],
+  "author": "Alireza Ghadimi (Qti3e)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/qti3e/bot-platform/issues"
+  },
+  "homepage": "https://github.com/qti3e/bot-platform#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "handlebars": "^4.0.10",
+    "node-telegram-bot-api": "",
+    "redis": ""
+  }
+}
