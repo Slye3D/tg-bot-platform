@@ -147,8 +147,8 @@ class Bot {
 
 	setPagination(...pages){
 		pages.forEach(value => {
-			if(this._pagation[value].indexOf(value) < 0){
-				this._pagation[value].push(value);
+			if(this._pagation.indexOf(value) < 0){
+				this._pagation.push(value);
 			}
 		})
 	}
