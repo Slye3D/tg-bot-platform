@@ -35,6 +35,7 @@ class Bot {
 		this._rejectForms = {};
 		this._actions   = {};
 		this.channel = channel;
+		this._pagation = [];
 	}
 
 	/**
@@ -144,7 +145,19 @@ class Bot {
 		this._pages[page] = [method, cache_args,expire_time, change_history, need_login];
 	}
 
+	setPagination(...pages){
+		pages.forEach(value => {
+			if(this._pagation[value].indexOf(value) < 0){
+				this._pagation[value].push(value);
+			}
+		})
+	}
+
 	_getPage(name, args, user, is_callback, message){
+		var edit_any_way    = false;
+		if(is_callback && this._pagation.indexOf(name) > -1){
+			edit_any_way = true;
+		}
 		var page = this._pages[name];
 		var method      = page[0],
 			cache_args  = page[1],
@@ -218,8 +231,13 @@ class Bot {
 						msg.load(q, user);
 					}else {
 						var msg = new BotMessage();
-						msg.load(re);
-						msg.send(user);
+						var h   = JSON.parse(re);
+						if(edit_any_way && h[0] == 'text'){
+							message.editText(h[1].text, h[1].options)
+						}else {
+							msg.load(re);
+							msg.send(user);
+						}
 					}
 				}
 			});
