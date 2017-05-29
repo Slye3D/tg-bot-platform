@@ -36,6 +36,7 @@ class Bot {
 		this._actions   = {};
 		this.channel = channel;
 		this._pagation = [];
+		this._404       = '404';
 	}
 
 	/**
@@ -96,6 +97,12 @@ class Bot {
 										this._getLinks('index', {}, user, message).then(links => {
 											if(links[message])
 												this.go(links[message], user, false, msg);
+											else if(links !== false){
+												this._getLinks(this._404, args, user, message).then(links => {
+													if(links[message])
+														this.go(links[message], user, false, msg);
+												})
+											}
 										})
 									}
 								})
@@ -478,5 +485,9 @@ class Bot {
 	inline(inline_query, chosen_inline_result){
 		global.TgBotApi.on('inline_query', inline_query);
 		global.TgBotApi.on('chosen_inline_result', chosen_inline_result);
+	}
+
+	on404(page){
+		this._404 = page;
 	}
 }
