@@ -21,7 +21,7 @@ class BotMessageSent{
 	}
 
 	load(json, user){
-		this.chat_id = user.id;
+		this.chat_id = user.id || user;
 		// json = JSON.parse(json);
 		json.forEach(value => {
 			var method  = value[0],
@@ -40,13 +40,14 @@ class BotMessageSent{
 		this.from           = message.from ? new User(message.from) : undefined;
 		this.chat           = message.chat instanceof User ? message.chat : new User(message.chat);
 		this.forward_from   = message.forward_from ? new User(message.forward_from) : undefined;
+		this.chat_id        = this.chat.id;
 	}
 
 	constructor(message, type, chat_id){
 		this._q = [];
-		this._load(message);
 		this.type       = type;
 		this.chat_id    = chat_id;
+		this._load(message);
 	}
 
 	editCaption(newCaption, options){
