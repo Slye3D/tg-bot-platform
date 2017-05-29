@@ -126,6 +126,10 @@ class Bot {
 			}
 		});
 
+		if(this._inline_query)
+			global.TgBotApi.on('inline_query', this._inline_query);
+		if(this._chosen_inline_result)
+			global.TgBotApi.on('chosen_inline_result', this._chosen_inline_result);
 	}
 
 	createLink(page, args, is_action = false){
@@ -483,8 +487,8 @@ class Bot {
 	}
 
 	inline(inline_query, chosen_inline_result){
-		global.TgBotApi.on('inline_query', inline_query);
-		global.TgBotApi.on('chosen_inline_result', chosen_inline_result);
+		this._inline_query          = inline_query;
+		this._chosen_inline_result  = chosen_inline_result;
 	}
 
 	on404(page){
