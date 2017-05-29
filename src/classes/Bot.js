@@ -46,9 +46,6 @@ class Bot {
 		// Create a bot with given token
 		global.TgBotApi = new TelegramBot(this._token, options);
 
-		global.TgBotApi.on('inline_query', (msg) => {
-			// console.log(msg)
-		});
 		// Listen for new incoming messages
 		global.TgBotApi.on('message', (msg) => {
 			// For know we just support the text messages
@@ -170,12 +167,12 @@ class Bot {
 			if(m_ret instanceof Promise){
 				m_ret.then(m_ret => {
 					if(m_ret instanceof BotMessage){
-						m_ret.send(user);
+						m_ret.send(message.chat_id);
 					}
 				})
 			}else {
 				if(m_ret instanceof BotMessage){
-					m_ret.send(user);
+					m_ret.send(message.chat_id);
 				}
 			}
 			return change_history;
@@ -188,6 +185,8 @@ class Bot {
 			cache_args.forEach(value => {
 				if(value == '%u'){
 					c_args.push(user.id)
+				}else if(value == '%c'){
+					c_args.push(message.chat_id);
 				}else {
 					c_args.push(args[value])
 				}
@@ -199,7 +198,7 @@ class Bot {
 				if(m_ret instanceof BotMessage){
 					d = m_ret.save();
 					global.RedisClient.set(cache_key, d);
-					m_ret.send(user);
+					m_ret.send(message.chat_id);
 				}else if(m_ret instanceof BotMessageSent){
 					d = m_ret.save();
 					global.RedisClient.set(cache_key, '+'+d);
@@ -228,15 +227,15 @@ class Bot {
 							t   = re[1],
 							q   = re[2];
 						var msg = new BotMessageSent(message, t);
-						msg.load(q, user);
+						msg.load(q, message.chat_id);
 					}else {
-						var msg = new BotMessage();
 						var h   = JSON.parse(re);
 						if(edit_any_way && h[0] == 'text'){
 							message.editText(h[1].text, h[1].options)
 						}else {
+							var msg = new BotMessage();
 							msg.load(re);
-							msg.send(user);
+							msg.send(message.chat_id);
 						}
 					}
 				}
@@ -474,5 +473,10 @@ class Bot {
 
 	sendChatAction(chat_id ,action){
 		return global.TgBotApi.sendChatAction(chat_id, action);
+	}
+
+	inline(inline_query, chosen_inline_result){
+		global.TgBotApi.on('inline_query', inline_query);
+		global.TgBotApi.on('chosen_inline_result', chosen_inline_result);
 	}
 }
