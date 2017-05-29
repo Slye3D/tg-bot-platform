@@ -48,10 +48,11 @@ class User {
 					global.TgBotApi.getChatMember(chat_id, this.id).then((ChatMember) => {
 						var re = ChatMember.status && (ChatMember.status == 'member' || ChatMember.status == 'administrator' || ChatMember.status == 'creator');
 						global.RedisClient.set('i:' + this.id, re ? 1 : 0);
-						global.RedisClient.expire('i:' + this.id, 3600);
+						global.RedisClient.expire('i:' + this.id, 20);
 						resolve(re);
 					});
 				}else {
+					global.RedisClient.expire('i:' + this.id, 20);
 					re = parseInt(re);
 					if(re){
 						resolve(true);
