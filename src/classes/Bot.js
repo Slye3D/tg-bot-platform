@@ -90,22 +90,22 @@ class Bot {
 							this.go('open:start', user, false, msg)
 						}else {
 							user.get('args', args => {
-								this._getLinks(page, args, user, message).then(links => {
+								this._getLinks('index', {}, user, message, msg).then(links => {
 									if(links[message])
 										this.go(links[message], user, false, msg);
 									else if(page !== 'index'){
-										this._getLinks('index', {}, user, message).then(links => {
+										this._getLinks(page, args, user, message, msg).then(links => {
 											if(links[message])
 												this.go(links[message], user, false, msg);
 											else if(links !== false){
-												this._getLinks(this._404, args, user, message).then(links => {
+												this._getLinks(this._404, args, user, message, msg).then(links => {
 													if(links[message])
 														this.go(links[message], user, false, msg);
 												})
 											}
 										})
 									}
-								})
+								});
 							})
 						}
 					});
@@ -122,6 +122,7 @@ class Bot {
 				this.go(action, user, true, callbackQuery.message);
 			}
 			if(action.substr(0, s) == 'action'){
+				console.log(callbackQuery)
 				this.openAction(action, user, callbackQuery.message, callbackQuery);
 			}
 		});
@@ -278,7 +279,7 @@ class Bot {
 		this._links[page] = [method, cache_args, expire_time];
 	}
 
-	_getLinks(page, args, user, message){
+	_getLinks(page, args, user, message_text, msg){
 		var links       = this._links[page];
 		var method      = links[0],
 			cache_args  = links[1],
@@ -290,7 +291,7 @@ class Bot {
 			});
 		if(cache_args === false){
 			return new Promise(resolve => {
-				var m_ret   = method(args, user, message);
+				var m_ret   = method(args, user, message_text, msg);
 				if(m_ret instanceof Promise){
 					m_ret.then(m_ret => {
 						resolve(m_ret)
@@ -323,7 +324,7 @@ class Bot {
 		return new Promise(resolve => {
 			global.RedisClient.get(cache_key, (err, re) => {
 				if(re == null){
-					var m_ret   = method(args, user, message);
+					var m_ret   = method(args, user, message_text, msg);
 					if(m_ret instanceof Promise){
 						m_ret.then(m_ret => {
 							save_cache(m_ret);
