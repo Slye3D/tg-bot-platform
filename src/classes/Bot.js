@@ -122,7 +122,6 @@ class Bot {
 				this.go(action, user, true, callbackQuery.message);
 			}
 			if(action.substr(0, s) == 'action'){
-				console.log(callbackQuery)
 				this.openAction(action, user, callbackQuery.message, callbackQuery);
 			}
 		});
