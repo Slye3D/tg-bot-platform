@@ -167,6 +167,10 @@ class Bot {
 			edit_any_way = true;
 		}
 		var page = this._pages[name];
+		if(!page)
+			return new Promise(resolve => {
+				resolve({});
+			});
 		var method      = page[0],
 			cache_args  = page[1],
 			expire_time = page[2],
