@@ -27,6 +27,9 @@ global.TgBotApi         = undefined;
 
 // Include classes
 module.exports = {
+	select: function (id) {
+		return global.RedisClient.select(id)
+	},
 	BotMessage: BotMessage,
 	Bot: Bot,
 	User: User,
