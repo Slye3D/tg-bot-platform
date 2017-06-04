@@ -90,7 +90,8 @@ class Bot {
 							this.go('open:start', user, false, msg)
 						}else {
 							user.get('args', args => {
-								this._getLinks('index', {}, user, message, msg).then(links => {
+								var ar = page == 'index' ? args : {};
+								this._getLinks('index', ar, user, message, msg).then(links => {
 									if(links[message])
 										this.go(links[message], user, false, msg);
 									else if(page !== 'index'){
